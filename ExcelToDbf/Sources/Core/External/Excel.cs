@@ -12,7 +12,6 @@ namespace ExcelToDbf.Sources.Core.External
         public Excel()
         {
             app = new Application();
-
         }
 
         public bool OpenWorksheet(String path)

@@ -46,20 +46,23 @@
 
   <Forms>
     <Form>
-      <Name>Форма 2.21А</Name>
+      <Name>ГНС</Name>
       <Rules>
-        <Equal Y="2" X="2">Форма 2.21А</Equal>
-        <Equal Y="7" X="2">№</Equal>
-        <Equal Y="7" X="3">ФИО</Equal>
-        <Equal Y="7" X="4">Счёт</Equal>
-        <Equal Y="7" X="5">Сумма</Equal>
-        <Equal Y="7" X="6">Дата оплаты</Equal>
+        <!-- <Equal Y="2" X="2">Форма 2.21А</Equal> -->
+        <Equal Y="21" X="1">№ п/п</Equal>
+        <Equal Y="21" X="2">ID платежа</Equal>
+        <Equal Y="21" X="3">Код налога</Equal>
+        <Equal Y="21" X="4">Сумма платежа</Equal>
+        <Equal Y="21" X="5">ИНН плательщика</Equal>
+        <Equal Y="21" X="6">ФИО налогоплательщика</Equal>
       </Rules>
       <Fields>
-        <StartY>8</StartY>
+        <StartY>22</StartY>
         <!-- Максимальное значение X, которое будет вытянуто в массив -->
-        <EndX>7</EndX>
+        <EndX>14</EndX>
+        
         <!-- IF подобно Dynamic будет вызван для каждой записи -->
+        <!--
         <IF X="2" VALUE="Пропуск">
           <THEN>
             <SKIP_RECORD />
@@ -67,38 +70,58 @@
         </IF>
         <IF X="2" VALUE="Итого:">
           <THEN>
+         -->
             <!-- Сумма из отчёта -->
+        <!--
             <Dynamic X="5" name="XLS_SUMMA" type="numeric" />
             <STOP_LOOP />
           </THEN>
         </IF>
+        -->
         <!-- Тип по умолчанию - string -->
         <Dynamic X="2" name="ID" />
-        <Dynamic X="3" name="FIO" />
-        <Dynamic X="4" name="KP" />
-        <Dynamic X="5" name="SUMMA" type="numeric" />
+        <Dynamic X="3" name="GOVNO" />
+        <Dynamic X="4" name="SUMMA" type="numeric" />
+        <Dynamic X="5" name="INN" />
+        <Dynamic X="6" name="FIO" />
+        <Dynamic X="7" name="GNI" />
+        <Dynamic X="8" name="KAZNAME" />
+        <Dynamic X="9" name="KAZID" />
+        <Dynamic X="10" name="AIMAK" />
+        
         <!-- Суммирование для каждой записи -->
-        <Dynamic X="5" name="TOTAL_SUMMA" type="numeric" function="SUM" />
+        <!-- <Dynamic X="5" name="TOTAL_SUMMA" type="numeric" function="SUM" /> -->
+        
         <!-- language - необязательный тэг, по умолчанию будет задан ru-ru -->
         <!-- форматы даты: https://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.110).aspx -->
-        <Dynamic X="6" name="DATEOPL" type="date" format="dd.MM.yyyy" language="ru-ru" lastday="false"/>
+        <!-- <Dynamic X="6" name="DATEOPL" type="date" format="dd.MM.yyyy" language="ru-ru" lastday="false"/> -->
+      
+        <Dynamic X="11" name="DATETIME" type="date" format="dd.MM.yyyy" />
+        <Dynamic X="12" name="TERMNUMBER" />
+        <Dynamic X="13" name="GOVNUMBER" />
+        <Dynamic X="14" name="CHECKNUMBER" />
       </Fields>
       <DBF>
         <field name="ID" type="string" length="8">$ID</field>
-        <field name="KP" type="string" length="8">$KP</field>
-        <field name="FIO" type="string" length="60">$FIO</field>
+        <field name="GOVNO" type="string" length="8">$GOVNO</field>
         <field name="SUMMA" type="numeric" length="6,2">$SUMMA</field>
-        <field name="DATAOPL" type="date" format="yyyy-MM-dd" length="8">$DATEOPL</field>
+        <field name="INN" type="string" length="60">$INN</field>
+        <field name="FIO" type="string" length="60">$FIO</field>
+        
+        <field name="DATETIME" type="date" format="yyyy-MM-dd" length="8">$DATETIME</field>
       </DBF>
       <Validate>
         <!-- Сравнение суммы из отчёта и таблицы, помогает избежать расхождения при промежуточных полях -->
-        <Equal var1="TOTAL_SUMMA" var2="XLS_SUMMA">
+        <!-- <Equal var1="TOTAL_SUMMA" var2="XLS_SUMMA"> -->
           <!-- На 10.000 записей допускается математическая погрешность в 0,5 -->
-          <Math type="numeric" count="10000" precision="0,5">Допустимая погрешность = {0}, значения отличаются на {1}</Math>
+          <!-- <Math type="numeric" count="10000" precision="0,5">Допустимая погрешность = {0}, значения отличаются на {1}</Math>
           <Message>Итоговая сумма в DBF отличается от суммы в Excel!\nВ документе {0} ≠ {1} в экселе</Message>
-        </Equal>
+        </Equal> -->
       </Validate>
     </Form>
+    
+      
+    
     <Form>
       <Name>Форма 2.21Б</Name>
       <Rules>
